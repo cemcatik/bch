@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -44,27 +44,28 @@ func verify(c *cli.Context) error {
 }
 
 func main() {
-	app := cli.NewApp()
-	app.Name = "bch"
-	app.Usage = "Generate and verify bcrypt password hashes"
-	app.Commands = []cli.Command{
-		{
-			Name:  "hash",
-			Usage: "Generate bcrypt password hash",
-			Flags: []cli.Flag{
-				cli.IntFlag{
-					Name:  "factor, f",
-					Value: 12,
-					Usage: "work factor",
+	app := &cli.App{
+		Name:  "bch",
+		Usage: "Generate and verify bcrypt password hashes",
+		Commands: []*cli.Command{
+			{
+				Name:  "hash",
+				Usage: "Generate bcrypt password hash",
+				Flags: []cli.Flag{
+					&cli.IntFlag{
+						Name:  "factor, f",
+						Value: 12,
+						Usage: "work factor",
+					},
 				},
+				Action: hash,
 			},
-			Action: hash,
-		},
-		{
-			Name:      "verify",
-			Usage:     "Verify given hash against entered password",
-			ArgsUsage: "[hash]",
-			Action:    verify,
+			{
+				Name:      "verify",
+				Usage:     "Verify given hash against entered password",
+				ArgsUsage: "[hash]",
+				Action:    verify,
+			},
 		},
 	}
 
