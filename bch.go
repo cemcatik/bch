@@ -6,12 +6,12 @@ import (
 
 	"github.com/urfave/cli/v2"
 	"golang.org/x/crypto/bcrypt"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 func hash(c *cli.Context) error {
 	fmt.Println("Enter password: ")
-	password, _ := terminal.ReadPassword(0)
+	password, _ := term.ReadPassword(0)
 
 	factor := c.Int("factor")
 
@@ -35,7 +35,7 @@ func verify(c *cli.Context) error {
 	hashedBytes := []byte(hashed)
 
 	fmt.Println("Enter password: ")
-	password, _ := terminal.ReadPassword(0)
+	password, _ := term.ReadPassword(0)
 
 	err := bcrypt.CompareHashAndPassword(hashedBytes, password)
 	fmt.Println(err == nil)
